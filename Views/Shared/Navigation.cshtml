@@ -1,0 +1,14 @@
+﻿@using DigitalBoard.Helper 
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" asp-action="Index" asp-controller="Home">Digital Board</a>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            @if (SessionHelper.IsUsernameEmpty(Context.Session))
+            {
+                <a class="nav-item nav-link" asp-action="Signup" asp-controller="User" class="navbar-bran">Signup</a>
+                <a class="nav-item nav-link" asp-action="Login" asp-controller="User">Login</a>
+            } 
+        </div>
+    </div>
+</nav>

@@ -1,8 +1,88 @@
-﻿@{
+﻿@model IList<DigitalBoard.Models.Post>
+@{
     ViewData["Title"] = "Home Page";
+
+    int? myUserId = (int?)ViewData["userId"];
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<button type="button" class="btn btn-primary btn-block mb-5" data-toggle="modal" data-target="#exampleModal">
+    Add new post
+</button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add new post</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="AddPost" asp-controller="Post">
+                <div class="modal-body">
+                    <input class="mb-2 form-control" name="content" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container d-flex flex-column justify-content-center">
+    @foreach (var post in Model)
+    {
+        <div class="card d-flex">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">User: @post.User.Username </h5>
+                    <h6 class="card-text">@post.CreationDate.ToString("dd.MM.yyyy - HH:mm")</h6>
+                </div>
+                <p class="card-text">@post.Content</p>
+                <div class="d-flex flex-column">
+                    <button class="btn ml-auto" data-toggle="collapse" data-target="#comment-@post.Id">
+                        Show comments
+                    </button>
+                    <div id="comment-@post.Id" class="collapse">
+                        @foreach (var comment in post.Comments)
+                        {
+                            <div class="row mt-2 border-bottom">
+                                <div class="col-2">
+                                    <p class="font-weight-bold">@comment.Submiter.Username: </p>
+                                </div>
+                                <div class="col-8 d-flex">
+                                    <p class="lead overflow-auto flex-grow-1 mr-1">
+                                        @comment.Content
+                                    </p>
+                                    @if (myUserId.HasValue && myUserId.Value == comment.Submiter.Id)
+                                    {
+                                        <form asp-action="DeleteComment" asp-controller="Post">
+                                            <input type="hidden" name="commentId" value="@comment.Id" />
+                                            <button type="submit" class="trash-can btn btn-danger btn-block">Del</button>
+                                        </form>
+                                    }
+                                </div>
+                                <p class="col-2 align-self-end">@comment.SubmitDate.ToString("dd.MM.yyyy - HH:mm")</p>
+                                <br />
+                            </div>
+
+                        }
+                        <form class="form-inline mt-4" asp-action="AddComment" asp-controller="Post">
+                            <input hidden name="postId" value="@post.Id" />
+                            <div class="form-group mx-sm-3 mb-2 flex-grow-1">
+                                <label class="sr-only">Content</label>
+                                <input type="text" class="form-control flex-grow-1" name="content" placeholder="Content">
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-2">Comment</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p>&nbsp;</p>
+    }
+
 </div>
