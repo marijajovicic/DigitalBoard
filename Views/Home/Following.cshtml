@@ -1,37 +1,11 @@
 ﻿@model IList<DigitalBoard.Models.Post>
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Following Page";
 
     int? myUserId = (int?)ViewData["userId"];
 }
 
-<button type="button" class="btn btn-primary btn-block mb-5" data-toggle="modal" data-target="#exampleModal">
-    Add new post
-</button>
-
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add new post</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form asp-action="AddPost" asp-controller="Post">
-                <div class="modal-body">
-                    <input class="mb-2 form-control" name="content" />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Submit post</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="d-flex flex-column justify-content-center">
+<div class="d-flex flex-column justify-content-center"> 
     @foreach (var post in Model)
     {
         <div class="card d-flex">
@@ -71,8 +45,8 @@
                                                     </div>
                                                     <form asp-action="EditComment" asp-controller="Post">
                                                         <div class="modal-body">
-                                                                <input type="hidden" name="commentId" value="@comment.Id" />
-                                                                <input name="content" class="form-control flex-grow-1" value="@comment.Content" />
+                                                            <input type="hidden" name="commentId" value="@comment.Id" />
+                                                            <input name="content" class="form-control flex-grow-1" value="@comment.Content" />
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -108,5 +82,5 @@
             </div>
         </div>
         <p>&nbsp;</p>
-    } 
+    }
 </div>

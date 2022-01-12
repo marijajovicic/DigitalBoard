@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Neo4j.Driver;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using DigitalBoard.Helper;
 using System.Text;
@@ -58,12 +56,11 @@ namespace DigitalBoard.Controllers
             if(SessionHelper.IsUsernameEmpty(HttpContext.Session))
                 return RedirectToAction("Login");
 
-            var statementText = new StringBuilder();
-            statementText.Append($"MATCH ()-[c]->() where id(c) = ${commentId} set c.content = '${content}'");
+            var statementText = $"MATCH ()-[c]->() WHERE id(c) = {commentId} SET c.content = \"{content}\"";
 
             var session = _driver.AsyncSession();
-            var result = await session.WriteTransactionAsync(tx => tx.RunAsync(statementText.ToString()));
-            return RedirectToAction("Inedx", "Home");
+            var result = await session.WriteTransactionAsync(tx => tx.RunAsync(statementText));
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]

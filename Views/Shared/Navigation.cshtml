@@ -6,9 +6,14 @@
         <div class="navbar-nav">
             @if (SessionHelper.IsUsernameEmpty(Context.Session))
             {
-                <a class="nav-item nav-link" asp-action="Signup" asp-controller="User" class="navbar-bran">Signup</a>
+                <a class="nav-item nav-link" asp-action="Signup" asp-controller="User">Signup</a>
                 <a class="nav-item nav-link" asp-action="Login" asp-controller="User">Login</a>
             } 
+            else
+            {
+                <a class="nav-item nav-link" asp-action="Index">Home</a>
+                <a class="nav-item nav-link" asp-action="Following">My Following</a>
+            }
         </div>
     </div>
 </nav>

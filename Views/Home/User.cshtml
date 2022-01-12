@@ -1,37 +1,31 @@
 ﻿@model IList<DigitalBoard.Models.Post>
 @{
-    ViewData["Title"] = "Home Page";
-
+    ViewData["Title"] = "User Page";
+    bool? userIsFollowing = (bool?)ViewData["userIsFollowing"];
     int? myUserId = (int?)ViewData["userId"];
 }
 
-<button type="button" class="btn btn-primary btn-block mb-5" data-toggle="modal" data-target="#exampleModal">
-    Add new post
-</button>
-
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add new post</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form asp-action="AddPost" asp-controller="Post">
-                <div class="modal-body">
-                    <input class="mb-2 form-control" name="content" />
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Submit post</button>
-                </div>
+@if (userIsFollowing.HasValue)
+{
+    <div class="d-flex justify-content-end mb-3">
+        @if (userIsFollowing.Value)
+        {
+            <form asp-action="UnfollowUser" asp-controller="User">
+                <input hidden name="userToUnfollowId" value="@Model[0].User.Id" />
+                <button class="btn btn-secondary" type="submit">Unfollow me</button>
             </form>
-        </div>
+        }
+        else
+        {
+            <form asp-action="FollowUser" asp-controller="User">
+                <input hidden name="userToFollowId" value="@Model[0].User.Id" />
+                <button class="btn btn-primary" type="submit">Follow me</button>
+            </form>
+        }
     </div>
-</div>
+}
 
-<div class="d-flex flex-column justify-content-center">
+<div class="container d-flex flex-column justify-content-center">
     @foreach (var post in Model)
     {
         <div class="card d-flex">
@@ -71,8 +65,8 @@
                                                     </div>
                                                     <form asp-action="EditComment" asp-controller="Post">
                                                         <div class="modal-body">
-                                                                <input type="hidden" name="commentId" value="@comment.Id" />
-                                                                <input name="content" class="form-control flex-grow-1" value="@comment.Content" />
+                                                            <input type="hidden" name="commentId" value="@comment.Id" />
+                                                            <input name="content" class="form-control flex-grow-1" value="@comment.Content" />
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
