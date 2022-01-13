@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using DigitalBoard.Models;
 using DigitalBoard.Helper;
 
 namespace DigitalBoard.Controllers

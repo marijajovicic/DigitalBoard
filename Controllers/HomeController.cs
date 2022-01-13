@@ -30,7 +30,7 @@ namespace DigitalBoard.Controllers
                             OPTIONAL MATCH (p)<-[c:COMMENTED]-(uwc:User)
                             return u, p, c, uwc"; 
 
-            IList<Post> postsResponse = new List<Post>();
+            List<Post> postsResponse = new List<Post>();
             IResultCursor result;
             IAsyncSession session = _driver.AsyncSession();
             try
@@ -44,12 +44,10 @@ namespace DigitalBoard.Controllers
                     INode userWhoCommentedNode = rec["uwc"].As<INode>();
                     IRelationship commentRelationship = rec["c"].As<IRelationship>();
 
-                    Post postAlreadyExists = postsResponse.FirstOrDefault(postModel => postModel.Id == postNode.Id);
-                    var index = postsResponse.IndexOf(postAlreadyExists);
-
+                    int index = postsResponse.FindIndex(postModel => postModel.Id == postNode.Id); 
                     Comment comment = getComment(userWhoCommentedNode, commentRelationship);
 
-                    if (postAlreadyExists != null)
+                    if (index >= 0)
                     {
                         if (comment != null)
                         {
@@ -89,7 +87,7 @@ namespace DigitalBoard.Controllers
                 OPTIONAL MATCH (p)<-[c:COMMENTED]-(uwc:User)
                 return u, p, c, uwc"; 
 
-            IList<Post> postsResponse = new List<Post>();
+            List<Post> postsResponse = new List<Post>();
             ViewData["userIsFollowing"] = null;
             IResultCursor result;
             IAsyncSession session = _driver.AsyncSession();
@@ -105,12 +103,10 @@ namespace DigitalBoard.Controllers
                     INode userWhoCommentedNode = rec["uwc"].As<INode>();
                     IRelationship commentRelationship = rec["c"].As<IRelationship>();
 
-                    Post postAlreadyExists = postsResponse.FirstOrDefault(post => post.Id == postNode.Id);
-                    var index = postsResponse.IndexOf(postAlreadyExists); 
-
+                    int index = postsResponse.FindIndex(post => post.Id == postNode.Id); 
                     Comment comment = getComment(userWhoCommentedNode, commentRelationship);
 ;
-                    if(postAlreadyExists != null)
+                    if(index >= 0)
                     {
                         if(comment != null)
                         {
@@ -172,7 +168,7 @@ namespace DigitalBoard.Controllers
                     OPTIONAL MATCH (p)<-[c:COMMENTED]-(uwc:User)
                     return u, p, c, uwc"; 
 
-            IList<Post> postsResponse = new List<Post>();
+            List<Post> postsResponse = new List<Post>();
             IResultCursor result;
             IAsyncSession session = _driver.AsyncSession();
             try
@@ -186,12 +182,10 @@ namespace DigitalBoard.Controllers
                     INode userWhoCommentedNode = rec["uwc"].As<INode>();
                     IRelationship commentRelationship = rec["c"].As<IRelationship>();
 
-                    Post postAlreadyExists = postsResponse.FirstOrDefault(postModel => postModel.Id == postNode.Id);
-                    var index = postsResponse.IndexOf(postAlreadyExists); 
-
+                    int index = postsResponse.FindIndex(postModel => postModel.Id == postNode.Id); 
                     Comment comment = getComment(userWhoCommentedNode, commentRelationship);
 ;
-                    if(postAlreadyExists != null)
+                    if(index >= 0)
                     {
                         if(comment != null)
                         {
